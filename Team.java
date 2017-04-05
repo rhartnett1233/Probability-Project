@@ -4,7 +4,9 @@ public class Team{
 
 	private String name;
 	private double avgPPG;
+	private double PPGStdDev;
 	private double avgPAPG;
+	private double PAPGStdDev;
 	private Game[] gameList;
 	private char[] data;
 	private int gameIndex;
@@ -22,7 +24,9 @@ public class Team{
 		System.out.println(name);
 		System.out.println("----------------------------");
 		
+		System.out.print("Points Scored PG: ");
 		calcAvgPPG();
+		System.out.print("Points Allowed PG: ");
 		calcAvgPAPG();
 		System.out.println("---------------------------------");
 	}
@@ -250,10 +254,12 @@ public class Team{
 		return i;
 	}
 
-
 	public void calcAvgPPG(){
 		double result = 0;
 		double count = 0;
+		double StDev = 0;
+		double StDevTotal = 0;
+		double runningWeightedAVG = 0;
 		double scale = 1.0;
 		for(int i = 0; i < gameList.length; i++){
 			if(!name.equals("Timberwolves") && !name.equals("Trailblazers")){
@@ -261,6 +267,9 @@ public class Team{
 					double temp = gameList[i].getPoints()*scale;
 					result = result + temp;
 					count = count + scale;
+					runningWeightedAVG = (double)(result)/(double)(count);
+					double stdDevTemp = gameList[i].getPoints()-runningWeightedAVG;
+					StDevTotal = (StDevTotal + (stdDevTemp)*(stdDevTemp)*scale);
 					scale = scale + 1;
 				}
 			}
@@ -270,6 +279,9 @@ public class Team{
 						double temp = gameList[i].getPoints()*scale;
 						result = result + temp;
 						count = count + scale;
+						runningWeightedAVG = (double)(result)/(double)(count);
+						double stdDevTemp = gameList[i].getPoints()-runningWeightedAVG;
+						StDevTotal = (StDevTotal + (stdDevTemp)*(stdDevTemp)*scale);
 						scale = scale + 1;
 					}
 				}
@@ -281,12 +293,16 @@ public class Team{
 		}
 		avgPPG = (double)(result)/(double)(count);
 		System.out.println(avgPPG);
+		PPGStdDev = Math.sqrt((double)(StDevTotal)/(double)(count));
+		System.out.println("PS Std Dev: " + PPGStdDev);
 	}
-
-
+	
 	public void calcAvgPAPG(){
 		double result = 0;
 		double count = 0;
+		double StDev = 0;
+		double StDevTotal = 0;
+		double runningWeightedAVG = 0;
 		double scale = 1.0;
 		for(int i = 0; i < gameList.length; i++){
 			if(!name.equals("Timberwolves") && !name.equals("Trailblazers")){
@@ -294,6 +310,9 @@ public class Team{
 					double temp = gameList[i].getOPoints()*scale;
 					result = result + temp;
 					count = count + scale;
+					runningWeightedAVG = (double)(result)/(double)(count);
+					double stdDevTemp = gameList[i].getOPoints()-runningWeightedAVG;
+					StDevTotal = (StDevTotal + (stdDevTemp)*(stdDevTemp)*scale);
 					scale = scale + 1;
 				}
 			}
@@ -303,6 +322,9 @@ public class Team{
 						double temp = gameList[i].getOPoints()*scale;
 						result = result + temp;
 						count = count + scale;
+						runningWeightedAVG = (double)(result)/(double)(count);
+						double stdDevTemp = gameList[i].getOPoints()-runningWeightedAVG;
+						StDevTotal = (StDevTotal + (stdDevTemp)*(stdDevTemp)*scale);
 						scale = scale + 1;
 					}
 				}
@@ -313,8 +335,11 @@ public class Team{
 		}
 		avgPAPG = (double)(result)/(double)(count);
 		System.out.println(avgPAPG);
-		//System.out.println("Average PAPG: " + avgPAPG);
+		PAPGStdDev = Math.sqrt((double)(StDevTotal)/(double)(count));
+		System.out.println("PA Std Dev: " + PAPGStdDev);
 	}
+
+	
 
 	public String getName(){
 		return name;
