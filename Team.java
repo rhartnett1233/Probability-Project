@@ -252,49 +252,58 @@ public class Team{
 
 
 	public void calcAvgPPG(){
-		int result = 0;
-		int count = 0;
-		int scale = 0;
+		double result = 0;
+		double count = 0;
+		double scale = 1.0;
 		for(int i = 0; i < gameList.length; i++){
 			if(!name.equals("Timberwolves") && !name.equals("Trailblazers")){
 				if(gameList[i].getPoints() != 0){
-					result = result + gameList[i].getPoints();
-					count++;
+					double temp = gameList[i].getPoints()*scale;
+					result = result + temp;
+					count = count + scale;
+					scale = scale + 1;
 				}
 			}
 			else{
 				if(i < gameList.length-1){
 					if(gameList[i].getPoints() != 0){
-						result = result + gameList[i].getPoints();
-						count++;
+						double temp = gameList[i].getPoints()*scale;
+						result = result + temp;
+						count = count + scale;
+						scale = scale + 1;
 					}
 				}
 				else{
 					i++;
 				}
 			}
-			
+
 		}
 		avgPPG = (double)(result)/(double)(count);
 		System.out.println(avgPPG);
-		//System.out.println("----------------------------");
 	}
 
+
 	public void calcAvgPAPG(){
-		int result = 0;
-		int count = 0;
+		double result = 0;
+		double count = 0;
+		double scale = 1.0;
 		for(int i = 0; i < gameList.length; i++){
 			if(!name.equals("Timberwolves") && !name.equals("Trailblazers")){
 				if(gameList[i].getOPoints() != 0){
-					result = result + gameList[i].getOPoints();
-					count++;
+					double temp = gameList[i].getOPoints()*scale;
+					result = result + temp;
+					count = count + scale;
+					scale = scale + 1;
 				}
 			}
 			else{
 				if(i < gameList.length-1){
 					if(gameList[i].getOPoints() != 0){
-						result = result + gameList[i].getOPoints();
-						count++;
+						double temp = gameList[i].getOPoints()*scale;
+						result = result + temp;
+						count = count + scale;
+						scale = scale + 1;
 					}
 				}
 				else{
