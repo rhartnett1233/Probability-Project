@@ -21,14 +21,14 @@ public class Team{
 
 		readData();
 
-		System.out.println(name);
+		/*System.out.println(name);
 		System.out.println("----------------------------");
 		
 		System.out.print("Points Scored PG: ");
 		calcAvgPPG();
 		System.out.print("Points Allowed PG: ");
 		calcAvgPAPG();
-		System.out.println("---------------------------------");
+		System.out.println("---------------------------------");*/
 	}
 
 
@@ -371,6 +371,22 @@ public class Team{
 
 	public void setGameList(Game[] game){
 		gameList = game;
+	}
+
+	public double getPAPGStdDev(){
+		return PAPGStdDev;
+	}
+
+	public void setPAPGStdDev(double yy){
+		PAPGStdDev = yy;
+	}
+
+	public double getPPGStdDev(){
+		return PPGStdDev;
+	}
+
+	public void setPPGStdDev(double yy){
+		PPGStdDev = yy;
 	}
 
 }

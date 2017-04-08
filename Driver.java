@@ -8,6 +8,10 @@ import java.net.*;
 
 public class Driver{
 
+    public static final double INCREMENT = 1E-4;
+    public static final double EXP = 2.718281828;
+    public static final double SQRT2PI = 2.506628275;
+
 	public static void main(String[] args) throws IOException{
 
 		LinkedList<Team> teamList = new LinkedList<Team>();
@@ -113,12 +117,70 @@ public class Driver{
             }
         }
 
-        /*for(int i = 0; i < teamList.size(); i++){
-        	if(teamList.get(i) != null){
-        		System.out.print("index: " + i + "\t");
-        		teamList.get(i).printData();
-        	}
-        }*/
+        double xx = findIntersect(101.1, 11.14, 111.6, 9.975);
+        System.out.println(xx);
+        double area = overlapArea(xx, 101.1, 11.14, 111.6, 9.975);
+        System.out.println(area);
+
 	}
+
+    /*************************************************************************
+    *This function finds the intersect of the two gaussian distributions     *
+    *************************************************************************/
+    public static double findIntersect(double u1, double o1, double u2, double o2){
+        double a = 1/(2*Math.pow(o1,2)) - 1/(2*Math.pow(o2,2));
+        double b = u2/(Math.pow(o2,2)) - u1/(Math.pow(o1,2));
+        double c = Math.pow(u1,2)/(2*Math.pow(o1,2)) - Math.pow(u2,2)/(2*Math.pow(o2,2)) - Math.log(11.14/9.975);
+        double result = (b*b - 4*a*c);
+        if(result > 0){
+            double result1 = (-1*b+Math.sqrt(result))/(2*a);
+            double result2 = (-1*b-Math.sqrt(result))/(2*a);
+            if(result1 < result2){
+                return result1;
+            }
+            else{
+                return result2;
+            }
+        } 
+        return 0.0;
+    }
+
+
+    /*************************************************************************
+    *This function is how we are going to solve the integral we just not how *
+    *to find out what the bounds of the integral are                         *
+    *************************************************************************/
+    public static double integral(double a, double b, Function function){
+        double area = 0;
+        double modifier = 1;
+        if(a>b){
+            double temp = a;
+            a = b;
+            b = temp;
+        }
+        for(double i = a+INCREMENT; i<b; i+=INCREMENT){
+            double dFromA = i-a;
+            area += (INCREMENT/2)*(function.f(a+dFromA) + function.f(a+dFromA-INCREMENT));
+        }
+        return area;
+    }
+
+
+    /*************************************************************************
+    *This function finds the area of the overlapping section, this will tell *
+    *us the probability of the team with less average points winning         *
+    *************************************************************************/
+    public static double overlapArea(double intersect, double u1, double o1, double u2, double o2){
+        double xx = findIntersect(u1, o1, u2, o2);
+        double int1 = integral(intersect, 300, x -> {
+            return 1/(o1*SQRT2PI)*Math.pow(EXP, -Math.pow((x-u1), 2)/(2*o1*o1));
+        });
+        double int2 = integral(-100, intersect, x -> {
+            return 1/(o2*SQRT2PI)*Math.pow(EXP, -Math.pow((x-u2), 2)/(2*o2*o2));
+        });
+
+        double area = int1+int2;
+        return area;
+    }
 	
 }
