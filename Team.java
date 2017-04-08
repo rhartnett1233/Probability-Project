@@ -20,15 +20,8 @@ public class Team{
 		gameIndex = 0;
 
 		readData();
-
-		/*System.out.println(name);
-		System.out.println("----------------------------");
-		
-		System.out.print("Points Scored PG: ");
 		calcAvgPPG();
-		System.out.print("Points Allowed PG: ");
 		calcAvgPAPG();
-		System.out.println("---------------------------------");*/
 	}
 
 
@@ -292,9 +285,7 @@ public class Team{
 
 		}
 		avgPPG = (double)(result)/(double)(count);
-		System.out.println(avgPPG);
 		PPGStdDev = Math.sqrt((double)(StDevTotal)/(double)(count));
-		System.out.println("PS Std Dev: " + PPGStdDev);
 	}
 	
 	public void calcAvgPAPG(){
@@ -334,12 +325,20 @@ public class Team{
 			}
 		}
 		avgPAPG = (double)(result)/(double)(count);
-		System.out.println(avgPAPG);
 		PAPGStdDev = Math.sqrt((double)(StDevTotal)/(double)(count));
-		System.out.println("PA Std Dev: " + PAPGStdDev);
 	}
 
-	
+	public String getNextGame(){
+		String nextTeam = null;
+		for(int i = 0; i < gameList.length; i++){
+			Game curGame = gameList[i];
+			if(curGame.getPoints() == 0){
+				nextTeam = curGame.getOTeam();
+				break;
+			}
+		}
+		return nextTeam;
+	}
 
 	public String getName(){
 		return name;

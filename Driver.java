@@ -117,10 +117,27 @@ public class Driver{
             }
         }
 
-        double xx = findIntersect(101.1, 11.14, 111.6, 9.975);
-        System.out.println(xx);
-        double area = overlapArea(xx, 101.1, 11.14, 111.6, 9.975);
-        System.out.println(area);
+        ListIterator<Team> iter = teamList.listIterator();
+        while(iter.hasNext()){
+            Team curTeam = iter.next();
+            Team nextTeam = null;
+            ListIterator<Team> tempIter = teamList.listIterator();
+            while(tempIter.hasNext()){
+                Team temp = tempIter.next();
+                if(temp.getName().equals(curTeam.getNextGame())){
+                    nextTeam = temp;
+                    break;
+                }
+            }
+
+            System.out.println(curTeam.getName() + " vs " + nextTeam.getName());
+            System.out.println("CurTeam PPG and std = " + curTeam.getAvgPPG() + " " + curTeam.getPPGStdDev());
+            System.out.println("NextTeam PPG and std = " + nextTeam.getAvgPPG() + " " + nextTeam.getPPGStdDev());
+            double xx = findIntersect(curTeam.getAvgPPG(), curTeam.getPPGStdDev(), nextTeam.getAvgPPG(), nextTeam.getPPGStdDev());
+            double area = overlapArea(xx, curTeam.getAvgPPG(), curTeam.getPPGStdDev(), nextTeam.getAvgPPG(), nextTeam.getPPGStdDev());
+            System.out.println("intersection = " + xx + "\t area = " + area);
+            System.out.println("----------------------------");
+        }
 
 	}
 
@@ -135,6 +152,7 @@ public class Driver{
         if(result > 0){
             double result1 = (-1*b+Math.sqrt(result))/(2*a);
             double result2 = (-1*b-Math.sqrt(result))/(2*a);
+            System.out.println("intersection info = " + result1 + "\t " + result2);
             if(result1 < result2){
                 return result1;
             }
@@ -172,14 +190,27 @@ public class Driver{
     *************************************************************************/
     public static double overlapArea(double intersect, double u1, double o1, double u2, double o2){
         double xx = findIntersect(u1, o1, u2, o2);
-        double int1 = integral(intersect, 300, x -> {
-            return 1/(o1*SQRT2PI)*Math.pow(EXP, -Math.pow((x-u1), 2)/(2*o1*o1));
-        });
-        double int2 = integral(-100, intersect, x -> {
-            return 1/(o2*SQRT2PI)*Math.pow(EXP, -Math.pow((x-u2), 2)/(2*o2*o2));
-        });
+        double area;
+        if(u1 < u2){
+            /*double int1 = integral(intersect, 300, x -> {
+                return 1/(o1*SQRT2PI)*Math.pow(EXP, -Math.pow((x-u1), 2)/(2*o1*o1));
+            });*/
+            double int2 = integral(-100, intersect, x -> {
+                return 1/(o2*SQRT2PI)*Math.pow(EXP, -Math.pow((x-u2), 2)/(2*o2*o2));
+            });
 
-        double area = int1+int2;
+            area = int2;
+        }
+        else{
+            double int1 = integral(-100, intersect, x -> {
+                return 1/(o1*SQRT2PI)*Math.pow(EXP, -Math.pow((x-u1), 2)/(2*o1*o1));
+            });
+            /*double int2 = integral(intersect, 300, x -> {
+                return 1/(o2*SQRT2PI)*Math.pow(EXP, -Math.pow((x-u2), 2)/(2*o2*o2));
+            });*/
+
+            area = int1;
+        }
         return area;
     }
 	
