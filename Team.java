@@ -22,6 +22,11 @@ public class Team{
 		readData();
 		calcAvgPPG();
 		calcAvgPAPG();
+
+		System.out.println(name);
+		System.out.print("Points score: " + avgPPG);
+		System.out.print("Points scored against " + avgPAPG);
+		System.out.println("-----------------------------------");
 	}
 
 

@@ -117,7 +117,50 @@ public class Driver{
             }
         }
 
-        ListIterator<Team> iter = teamList.listIterator();
+        BufferedWriter bw = null;
+        FileWriter fw = null;
+
+        try{
+            fw = new FileWriter("data.txt");
+            bw = new BufferedWriter(fw);
+
+            ListIterator<Team> iter = teamList.listIterator();
+            while(iter.hasNext()){
+                Team curTeam = iter.next();
+                Team nextTeam = null;
+                ListIterator<Team> tempIter = teamList.listIterator();
+                while(tempIter.hasNext()){
+                    Team temp = tempIter.next();
+                    if(temp.getName().equals(curTeam.getNextGame())){
+                        nextTeam = temp;
+                        break;
+                    }
+                }
+            
+                String curData = curTeam.getName() + " " + curTeam.getAvgPPG() + " " + curTeam.getPPGStdDev();
+                String nextData = nextTeam.getName() + " " + nextTeam.getAvgPPG() + " " + nextTeam.getPPGStdDev();
+
+                bw.write(curData);
+                bw.newLine();
+                bw.write(nextData);
+                bw.newLine();
+                bw.newLine();
+            }
+
+        }catch (Exception e){
+            System.out.println("Writing to data file");
+        } finally {
+            try{
+                if(bw != null)
+                    bw.close();
+                if(fw != null)
+                    fw.close();
+            } catch (Exception h){
+                System.out.println("hey");
+            }
+        }
+
+        /*ListIterator<Team> iter = teamList.listIterator();
         while(iter.hasNext()){
             Team curTeam = iter.next();
             Team nextTeam = null;
@@ -137,7 +180,7 @@ public class Driver{
             double area = overlapArea(xx, curTeam.getAvgPPG(), curTeam.getPPGStdDev(), nextTeam.getAvgPPG(), nextTeam.getPPGStdDev());
             System.out.println("intersection = " + xx + "\t area = " + area);
             System.out.println("----------------------------");
-        }
+        }*/
 
 	}
 
