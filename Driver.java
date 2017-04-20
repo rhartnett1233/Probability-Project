@@ -21,7 +21,6 @@ public class Driver{
 								"Seventysixers", "Suns", "Trailblazers", "Kings", "Spurs", "Raptors", "Jazz",
 								"Wizards"};
 
-
 		FileWriter file1 = null;
 		BufferedWriter buf = null;
 		String resLine = null;
@@ -30,13 +29,10 @@ public class Driver{
 		System.out.println("Enter 1 to refresh information (takes a few minutes) or 0 to begin program:");
 		int choice = scan.nextInt();
 
-
 		//read in information from the database
 		if(choice == 1){
 
 			try{
-			
-
 				for(int i = 0; i < teamNames.length; i++){
 					//date,points,o:team,o:points@team=Celtics and season=2016
 					URL url = new URL("http://api.sportsdatabase.com/nba/query.json?sdql=date%2Cpoints%2Co%3Ateam%2Co%3Apoints%40team%3D"+teamNames[i]+"%20and%20season%3D2016&output=json&api_key=guest");
@@ -46,7 +42,6 @@ public class Driver{
 					BufferedReader br = new BufferedReader(new InputStreamReader(is));
 
 					String line = null;
-				
 
 					while ((line = br.readLine()) != null) {
     					resLine  = resLine + line;
@@ -54,32 +49,28 @@ public class Driver{
         			resLine = resLine + "\n";
 
         			TimeUnit.SECONDS.sleep(2);
-        		
         		}
-
         		System.out.println("----------------------------------------------------------------------------");
         		System.out.println("Loaded in successfull");
         		TimeUnit.SECONDS.sleep(5);
 
     			System.out.println(resLine);
 
-        	} catch (Exception e){
+        	} 
+			catch (Exception e){
         		System.out.println("Error Refreshing Data, Restart Program and Try Again!");
         	}
-
-
         	try{
         		file1 = new FileWriter("storage.txt");
 				buf = new BufferedWriter(file1);
 
 				buf.write(resLine);
-        	} catch (Exception e){
+        	} 
+        	catch (Exception e){
         		System.out.println("writing error");
         	}
-
         	buf.close();
     		file1.close();
-
 		}
 
 		//store information to storage.txt
@@ -107,11 +98,11 @@ public class Driver{
             		//System.out.println(count);
             	}
             	else
-            		data[index++] = curChar;            	
-                
+            		data[index++] = curChar;            	           
             }
 
-        } finally {
+        } 
+        finally {
             if (inputStream != null) {
                 inputStream.close();
             }
@@ -127,35 +118,27 @@ public class Driver{
             ListIterator<Team> iter = teamList.listIterator();
             while(iter.hasNext()){
                 Team curTeam = iter.next();
-                Team nextTeam = null;
                 ListIterator<Team> tempIter = teamList.listIterator();
-                while(tempIter.hasNext()){
-                    Team temp = tempIter.next();
-                    if(temp.getName().equals(curTeam.getNextGame())){
-                        nextTeam = temp;
-                        break;
-                    }
-                }
             
-                String curData = curTeam.getName() + " " + curTeam.getAvgPPG() + " " + curTeam.getPPGStdDev();
-                String nextData = nextTeam.getName() + " " + nextTeam.getAvgPPG() + " " + nextTeam.getPPGStdDev();
+                String curData = curTeam.getName() + " " + curTeam.getAvgPPG() + " " + curTeam.getAvgPAPG() + " " + curTeam.getPPGStdDev() + " " + curTeam.getPAPGStdDev();
 
                 bw.write(curData);
                 bw.newLine();
-                bw.write(nextData);
-                bw.newLine();
-                bw.newLine();
+
             }
 
-        }catch (Exception e){
+        }
+        catch (Exception e){
             System.out.println("Writing to data file");
-        } finally {
+        } 
+        finally {
             try{
                 if(bw != null)
                     bw.close();
                 if(fw != null)
                     fw.close();
-            } catch (Exception h){
+            } 
+            catch (Exception h){
                 System.out.println("hey");
             }
         }
