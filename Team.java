@@ -20,13 +20,13 @@ public class Team{
 		gameIndex = 0;
 
 		readData();
-		calcAvgPPG();
-		calcAvgPAPG();
+		//calcAvgPPG();
+		//calcAvgPAPG();
 
-		System.out.println(name);
+		/*System.out.println(name);
 		System.out.print("Points score: " + avgPPG);
-		System.out.print("Points scored against " + avgPAPG);
-		System.out.println("-----------------------------------");
+		System.out.println("Points scored against " + avgPAPG);
+		System.out.println("-----------------------------------");*/
 	}
 
 
@@ -343,6 +343,21 @@ public class Team{
 			}
 		}
 		return nextTeam;
+	}
+
+	public void eraseGames(){
+		if(!name.equals("Timberwolves") && !name.equals("Trailblazers")){
+			for(int i = 72; i < gameList.length; i++){
+				gameList[i].setPoints(0);
+				gameList[i].setOPoints(0);
+			}
+		}
+		else{
+			for(int i = 71; i < 80; i++){
+				gameList[i].setPoints(0);
+				gameList[i].setOPoints(0);
+			}
+		}
 	}
 
 	public String getName(){

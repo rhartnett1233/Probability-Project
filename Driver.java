@@ -117,6 +117,20 @@ public class Driver{
             }
         }
 
+
+        ListIterator<Team> iter1 = teamList.listIterator();
+        while(iter1.hasNext()){
+            Team curTeam = iter1.next();
+            curTeam.eraseGames();
+            curTeam.calcAvgPPG();
+            curTeam.calcAvgPAPG();
+            System.out.println(curTeam.getName());
+            System.out.print("Points score: " + curTeam.getAvgPPG());
+            System.out.println("Points scored against " + curTeam.getAvgPAPG());
+            System.out.println("-----------------------------------");
+        }
+
+
         BufferedWriter bw = null;
         FileWriter fw = null;
 
@@ -183,6 +197,7 @@ public class Driver{
         }*/
 
 	}
+
 
     /*************************************************************************
     *This function finds the intersect of the two gaussian distributions     *
